@@ -6,6 +6,12 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.config.Customizer;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebFluxSecurity
@@ -13,24 +19,42 @@ public class SecurityConfig {
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+        http.cors(Customizer.withDefaults()); // Habilitar CORS con la configuración por defecto
 
         http
-            // Deshabilita CSRF para simplificar pruebas (no usar en producción sin revisar)
+            // Deshabilita CSRF (útil en APIs REST)
             .csrf(csrf -> csrf.disable())
-            
-            // Configura qué rutas son públicas y cuáles requieren autenticación
+
+            // Define las políticas de acceso
             .authorizeExchange(exchanges -> exchanges
-                // Actuator accesible sin login
-                .pathMatchers("/actuator/health", "/actuator/info", "/api/**").permitAll()
-                // Login de Google accesible sin autenticación
-                .pathMatchers("/login/**", "/api/**").permitAll()
-                // Todo lo demás requiere estar autenticado
+                // Endpoints públicos (no requieren autenticación)
+                .pathMatchers(
+                    "/actuator/health",
+                    "/actuator/info",
+                    "/login/**",
+                    "/api/auto/**",
+                    "/clients/**"
+                ).permitAll()
+
+                // Todo lo demás requiere autenticación OAuth2
                 .anyExchange().authenticated()
             )
-            
-            // Habilita login interactivo con Google OAuth2
+
+            // Habilita login con Google OAuth2
             .oauth2Login(Customizer.withDefaults());
 
         return http.build();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174", "https://nonloxodromic-harriette-inertly.ngrok-free.dev", "https://36ef3f9e6f50.ngrok-free.app/")); // Añade los orígenes permitidos
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
