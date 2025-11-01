@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.security.config.Customizer;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
@@ -19,9 +18,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-        http.cors(Customizer.withDefaults()); // Habilitar CORS con la configuración por defecto
-
         http
+            // Habilitar CORS con la configuración por defecto (si es necesario, se puede reintroducir explícitamente)
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             // Deshabilita CSRF (útil en APIs REST)
             .csrf(csrf -> csrf.disable())
 
@@ -36,12 +35,9 @@ public class SecurityConfig {
                     "/clients/**"
                 ).permitAll()
 
-                // Todo lo demás requiere autenticación OAuth2
+                // Todo lo demás requiere autenticación
                 .anyExchange().authenticated()
-            )
-
-            // Habilita login con Google OAuth2
-            .oauth2Login(Customizer.withDefaults());
+            );
 
         return http.build();
     }
