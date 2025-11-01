@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: api-gateway
+  profiles:
+    active: dev
+  config:
+    import: optional:configserver:https://config-server.vardocs.app/api-gateway/dev
+server:
+  port: 8080
