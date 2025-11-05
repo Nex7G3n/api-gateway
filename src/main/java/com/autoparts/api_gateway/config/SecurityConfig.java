@@ -31,8 +31,7 @@ public class SecurityConfig {
                     "/actuator/health",
                     "/actuator/info",
                     "/login/**",
-                    "/api/auto/**",
-                    "/clients/**"
+                    "/api/clients/**"
                 ).permitAll()
 
                 // Todo lo demás requiere autenticación
@@ -45,7 +44,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174", "https://nonloxodromic-harriette-inertly.ngrok-free.dev", "https://36ef3f9e6f50.ngrok-free.app/")); // Añade los orígenes permitidos
+        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
