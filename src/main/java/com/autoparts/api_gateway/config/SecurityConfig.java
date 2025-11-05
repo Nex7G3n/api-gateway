@@ -28,6 +28,7 @@ public class SecurityConfig {
             .authorizeExchange(exchanges -> exchanges
                 // Endpoints públicos (no requieren autenticación)
                 .pathMatchers(
+                    "/",
                     "/actuator/health",
                     "/actuator/info",
                     "/login/**",
