@@ -4,6 +4,6 @@ spring:
   profiles:
     active: dev
   config:
-    import: optional:configserver:https://config-server.vardocs.app/api-gateway/dev
+    import: optional:configserver:https://config-server.vardocs.app/
 server:
   port: 8080
