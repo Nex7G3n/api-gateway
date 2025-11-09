@@ -32,7 +32,8 @@ public class SecurityConfig {
                     "/actuator/health",
                     "/actuator/info",
                     "/login/**",
-                    "/api/clients/**"
+                    "/api/clients/**",
+                    "/api/**",
                 ).permitAll()
 
                 // Todo lo demás requiere autenticación
