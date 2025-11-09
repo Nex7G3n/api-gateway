@@ -33,7 +33,7 @@ public class SecurityConfig {
                     "/actuator/info",
                     "/login/**",
                     "/api/clients/**",
-                    "/api/**",
+                    "/api/**"
                 ).permitAll()
 
                 // Todo lo demás requiere autenticación
