@@ -4,7 +4,7 @@ spring:
   profiles:
     active: dev
   config:
-    import: configserver:https://ms-config-server.nxgen.dev/
+    import: optional:configserver:https://ms-config-server.nxgen.dev/
 eureka:
   client:
     service-url:
