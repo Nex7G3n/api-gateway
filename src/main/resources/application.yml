@@ -4,6 +4,12 @@ spring:
   profiles:
     active: dev
   config:
-    import: optional:configserver:https://ms-config-server.nxgen.dev/
+    import: configserver:https://ms-config-server.nxgen.dev/
+eureka:
+  client:
+    service-url:
+      defaultZone: https://ms-eureka-server.nxgen.dev/eureka/
+    register-with-eureka: true
+    fetch-registry: true
 server:
   port: 8080
