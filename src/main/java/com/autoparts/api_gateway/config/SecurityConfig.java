@@ -26,18 +26,8 @@ public class SecurityConfig {
 
             // Define las políticas de acceso
             .authorizeExchange(exchanges -> exchanges
-                // Endpoints públicos (no requieren autenticación)
-                .pathMatchers(
-                    "/",
-                    "/actuator/health",
-                    "/actuator/info",
-                    "/login/**",
-                    "/api/clients/**",
-                    "/api/**"
-                ).permitAll()
-
-                // Todo lo demás requiere autenticación
-                .anyExchange().authenticated()
+                // Permitir todo sin autenticación (para desarrollo)
+                .anyExchange().permitAll()
             );
 
         return http.build();
